@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|VT323|Quicksand|Inconsolata|Pushster|Shizuru|Rock 3D|Montserrat');
+
+.container{
+    text-align:center;
+}
+.container canvas{
+    border: 1px solid #000;
+    display: inline-block;
+   
+}
+.container #btnfile{
+    /*display: inline-block;
+    background-color: indigo;
+    color: white;*/
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
