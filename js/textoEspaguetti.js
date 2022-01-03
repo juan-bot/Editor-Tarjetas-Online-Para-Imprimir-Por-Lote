@@ -6,6 +6,7 @@ function dibujaTexto(){
 fabric.Object.prototype.objectCaching = true;
 
 canvas.on('before:path:created', function(opt) {
+    console.log("opt: ",opt)
     var path = opt.path;
     path.visible=false; //para que no se vea la linea cuando la traces
     var pathInfo = fabric.util.getPathSegmentsInfo(path.path);
@@ -20,6 +21,7 @@ canvas.on('before:path:created', function(opt) {
         left: path.left 
     });
     canvas.add(text);
+    ObtieneElementos();
 });
 
 canvas.on('path:created', function(opt) {

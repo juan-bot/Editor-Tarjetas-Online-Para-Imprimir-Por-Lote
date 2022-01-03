@@ -1,23 +1,24 @@
 //imagen inicial
-fabric.Image.fromURL('https://rockcontent.com/es/wp-content/uploads/sites/3/2019/02/Banco-de-im%C3%A1genes-1024x538.png.webp', function(img) {
-  img.set({ left: 20, top: 80}).scale(0.23);
+fabric.Image.fromURL('../images/loro.jpg', function(img) {
+  img.set({ left: 20, top: 70}).scale(0.23);
   canvas.add(img);
+  ObtieneElementos();
 });
 
 var imgElement = "";
 var inputforupload = "";
 var readerobj = "";
-/** Überschreiben der Objektecken mit Icons **/
+/** Ajustes de la imagen para darle estilo **/
 var HideControls = {
     'tl':true,
     'tr':true,
     'bl':true,
-    'br':false,
-    'ml':false,
-    'mt':false,
-    'mr':false,
-    'mb':false,
-    'mtr':false
+    'br':true,
+    'ml':true,
+    'mt':true,
+    'mr':true,
+    'mb':true,
+    'mtr':true
 };
 var ctrlImages = new Array()
 function preload() {
@@ -101,25 +102,24 @@ fabric.Object.prototype._drawControl = function(control, ctx, methodName, left, 
             break;
         }
 
-            if (control == 'tl' || control == 'tr' || control == 'bl' || control == 'br'
-            || control == 'mt' || control == 'mb' || control == 'ml' || control == 'mr'){
-                sizeX = 30;
-                sizeY = 30;
-                ctx.drawImage(SelectedIconImage, left, top, sizeX, sizeY);
-            }
-            try {
-                ctx.drawImage(SelectedIconImage, left, top, sizeX, sizeY);
+        if (control == 'tl' || control == 'tr' || control == 'bl' || control == 'br'
+        || control == 'mt' || control == 'mb' || control == 'ml' || control == 'mr'){
+            sizeX = 30;
+            sizeY = 30;
+            ctx.drawImage(SelectedIconImage, left, top, sizeX, sizeY);
+        }
+        try {
+            ctx.drawImage(SelectedIconImage, left, top, sizeX, sizeY);
 
-            } catch (e) {
-                if (e.name != "NS_ERROR_NOT_AVAILABLE") {
-                    throw e;
-                }
+        } catch (e) {
+            if (e.name != "NS_ERROR_NOT_AVAILABLE") {
+                throw e;
             }
+        }
         }
 };//end
 
-//********override END*****//
-/** eigentliche upload funktion... greift das Element aus dem input Feld ab und wandelt es direkt in base64 um **/
+
 var readFile = function(e) {
     inputforupload = e.target;
     readerobj = new FileReader();
@@ -129,41 +129,27 @@ var readFile = function(e) {
         imgElement.src = readerobj.result;
 
         imgElement.onload = function() {
-        /** seltsam aber scheinbar muss alles in die onload Funktion gepackt werden damit die Bildbröße verfügbar ist...
-            ausserhalb kommen die Variablen für die Bildgröße nicht an... **/
-
-            console.log(imgElement.width);
-            console.log(imgElement.height);
-
-            /** Methode um ein Bild in fabric.js einzufügen **/
             var imageinstance = new fabric.Image(imgElement, {
                     angle: 0,
                     opacity: 1,
                     cornerSize: 30,
+                  
                 });
-        /** Bild skalieren damit es in das Canvas Objekt reinpasst */
-        /** check ob canvas portrait oder landscape format ist **/
         var cw = $(".canvas-container").width();
         var ch = $(".canvas-container").height();
         if(cw > ch){
-            /** canvas ist landscape **/
-            imageinstance.scaleToWidth($(".canvas-container").width() - 200);
-            imageinstance.scaleToHeight($(".canvas-container").height() - 200);
+            imageinstance.scaleToWidth($(".canvas-container").width() - 100);
+            imageinstance.scaleToHeight($(".canvas-container").height() - 100);
 
         }else{
-            /** canvas ist portrait **/
-            imageinstance.scaleToHeight($(".canvas-container").height() - 200);
-            imageinstance.scaleToWidth($(".canvas-container").width() - 200);
-
+            imageinstance.scaleToHeight($(".canvas-container").height() - 100);
+            imageinstance.scaleToWidth($(".canvas-container").width() - 100);
         }
-
         imageinstance.setControlsVisibility(HideControls);
-        //imageinstance.cornerSize(40);
-        //  imageinstance["cornerSize"] = parseFloat(40);
-        // removes the right top control
         canvas.add(imageinstance);
-        canvas.sendToBack(imageinstance);
+        canvas.sendToBack(imageinstance);//envia al fondo de cualquier elemento
         canvas.centerObject(imageinstance);
+        ObtieneElementos();
         };
     };
     readerobj.readAsDataURL(inputforupload.files[0]);
